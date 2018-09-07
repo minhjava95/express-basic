@@ -7,6 +7,10 @@
         "demo": {
             "name": "FullStack USA",
             "email": "demo@demo.com"
+        },
+        "minh": {
+            "name": "FullStack Minh",
+            "email": "minh@minh.com"
         }
     }
 }

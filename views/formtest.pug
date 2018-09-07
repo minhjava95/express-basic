@@ -1,0 +1,13 @@
+extends layout
+
+block content
+	h1= title
+	form(method="POST", action="/savetest")
+		.form-group
+			input.form-control(name="Username" placeholder="Username")
+		.form-group
+			input.form-control(name="Name" placeholder="Name")
+		.form-group
+			input.form-control(name="EmailAddress" placeholder="Email")
+		.form-group
+			button.btn.btn-primary(type="submit") Thêm mới

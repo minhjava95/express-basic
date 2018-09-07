@@ -9,8 +9,11 @@ var fs = require('fs');
 var indexRouter = require('./routes/index');
 var aboutRouter = require('./routes/about');
 var usersRouter = require('./routes/users');
+var userstestRouter = require('./routes/userstest');
 var usersDetailRouter = require('./routes/usersdetails');
+var userstestDetailRouter = require('./routes/usersdetailstest');
 var formRouter = require('./routes/form');
+var formtestRouter = require('./routes/formtest');
 // Khởi tạo APP
 var app = express();
 // Gọi Template
@@ -31,8 +34,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/about', aboutRouter);
 app.use('/users', usersRouter);
+app.use('/userstest', userstestRouter);
 app.use('/user', usersDetailRouter);
+app.use('/usertest', userstestDetailRouter);
 app.use('/form', formRouter);
+app.use('/formtest', formtestRouter);
 // Xử lý lưu file
 app.post('/save', function (req, res, next) {
 	// console.log(req.body.Username)
@@ -58,6 +64,31 @@ app.post('/save', function (req, res, next) {
 	res.redirect('/users')
 })
 
+// Xử lý lưu file Test
+app.post('/savetest', function (req, res, next) {
+	// console.log(req.body.Username)
+	// console.log(req.body.EmailAddress)
+	// Viết hàm check trùng username hoặc email
+	fs.readFile('./db/usertest.json', 'utf8', function readFileCallback(err, data) {
+		if (err) {
+			console.log(err);
+		} else {
+			let dataOld = JSON.parse(data)
+			let dataAdd = {}
+			dataAdd.user = req.body.Username
+			dataAdd.name = req.body.Name
+			dataAdd.email = req.body.EmailAddress
+			dataOld.lists[req.body.Username] = dataAdd
+			let dataSave = JSON.stringify(dataOld, null, 4);
+			fs.writeFileSync('./db/usertest.json', dataSave, 'utf8', function (err) {
+				if (err) {
+					return console.log(err);
+				}
+			});
+		}
+	});
+	res.redirect('/userstest')
+})
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
 	if(req.app.get('env') === 'dev') {

@@ -1,0 +1,18 @@
+extends layout
+
+block content
+	h1= title
+	table.table.table-bordered
+		thead
+			tr 
+				th Username
+				th Name
+				th Email
+		tbody
+			- for(x=0; x<data.length; x++)
+				tr
+					td
+						a(href='/usertest/'+x)
+							img.img-fluid(src=data[x].username, alt="")
+					td=data[x].name
+					td=data[x].email
