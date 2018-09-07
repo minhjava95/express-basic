@@ -4,10 +4,13 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var sassMiddleware = require('node-sass-middleware');
+var fs = require('fs');
 // Gọi Route
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var aboutRouter = require('./routes/about');
+var usersRouter = require('./routes/users');
+var usersDetailRouter = require('./routes/usersdetails');
+var formRouter = require('./routes/form');
 // Khởi tạo APP
 var app = express();
 // Gọi Template
@@ -26,8 +29,34 @@ app.use(sassMiddleware({
 app.use(express.static(path.join(__dirname, 'public')));
 // Init App
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/about', aboutRouter);
+app.use('/users', usersRouter);
+app.use('/user', usersDetailRouter);
+app.use('/form', formRouter);
+// Xử lý lưu file
+app.post('/save', function (req, res, next) {
+	// console.log(req.body.Username)
+	// console.log(req.body.EmailAddress)
+	// Viết hàm check trùng username hoặc email
+	fs.readFile('./db/user.json', 'utf8', function readFileCallback(err, data) {
+		if (err) {
+			console.log(err);
+		} else {
+			let dataOld = JSON.parse(data)
+			let dataAdd = {}
+			dataAdd.user = req.body.Username
+			dataAdd.email = req.body.EmailAddress
+			dataOld.lists[req.body.Username] = dataAdd
+			let dataSave = JSON.stringify(dataOld, null, 4);
+			fs.writeFileSync('./db/user.json', dataSave, 'utf8', function (err) {
+				if (err) {
+					return console.log(err);
+				}
+			});
+		}
+	});
+	res.redirect('/users')
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

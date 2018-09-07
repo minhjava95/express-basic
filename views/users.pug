@@ -11,6 +11,7 @@ block content
 		tbody
 			- for(var user in data)
 				tr 
-					td=user
+					td
+						a(href="/user/"+user) #{user}
 					td=data[user].name
 					td=data[user].email
