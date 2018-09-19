@@ -12,7 +12,7 @@ block content
 			- for(x=0; x<data.length; x++)
 				tr
 					td
-						a(href='/usertest/'+x)
+						a(href='/usertest/'+data[x]._id)
 							img.img-fluid(src=data[x].username, alt="")
 					td=data[x].name
 					td=data[x].email
